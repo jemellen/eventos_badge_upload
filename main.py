@@ -12,9 +12,8 @@ VENDOR_AFFILIATION_API_URL = "https://www.renfairdata.org/api/vendors?fair=breva
 ENTERTAINMENT_AFFILIATION_API_URL = "https://www.renfairdata.org/api/acts?fair=brevard&year=2025"
 BULK_ENTRY_API_URL = "http://your-backend-api-url.com/bulk_submit"
 
-st.set_page_config(menu_items=None)
-st.set_page_config(page_title="BRF Badge Creator")
-st.set_page_config(page_icon="👑")
+st.set_page_config(menu_items=None, page_title="BRF Badge Creator", page_icon="👑")
+
 
 # Function to fetch affiliations from API
 def fetch_affiliations(role:str):
@@ -35,6 +34,12 @@ def fetch_affiliations(role:str):
     except Exception as e:
         st.error(f"An error occurred while fetching affiliations: {e}")
         return []
+
+
+def scale_image(original_width, original_height, new_width):
+    new_height = int(original_height * (new_width / original_width))
+    return new_width, new_height
+
 
 # Page 1: Single Entry
 def single_entry():
@@ -123,16 +128,16 @@ def single_entry():
     if photo:
         # Preview the uploaded photo
         image = Image.open(photo)
-        st.image(image, caption="Uploaded Photo", width=200)
+        st.image(image, caption="Uploaded Photo", width=300)
 
         # Add cropping functionality
         st.write("Crop your photo below:")
         cropped_image = streamlit_cropper.st_cropper(
-            image, aspect_ratio=(1, 1), box_color="#FF0000"
+            image.resize(scale_image(image.width, image.height, 300)), aspect_ratio=(1, 1), box_color="#FF0000"
         )
 
         if cropped_image:
-            st.image(cropped_image, caption="Cropped Photo", width=200)
+            st.image(cropped_image, caption="Cropped Photo", width=300)
 
     # Submit button
     if st.button("Submit"):
