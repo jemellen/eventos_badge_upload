@@ -7,7 +7,7 @@ import streamlit_cropper
 event_id = "BRF25"
 
 # Define the backend API endpoint
-BACKEND_API_URL = "http://localhost:8000/"
+BACKEND_API_URL = "https://ticket-web-service-6kelgrpcxq-uc.a.run.app/"
 VENDOR_AFFILIATION_API_URL = "https://www.renfairdata.org/api/vendors?fair=brevard&year=2025"
 ENTERTAINMENT_AFFILIATION_API_URL = "https://www.renfairdata.org/api/acts?fair=brevard&year=2025"
 BULK_ENTRY_API_URL = "http://your-backend-api-url.com/bulk_submit"
