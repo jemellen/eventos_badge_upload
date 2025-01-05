@@ -12,6 +12,10 @@ VENDOR_AFFILIATION_API_URL = "https://www.renfairdata.org/api/vendors?fair=breva
 ENTERTAINMENT_AFFILIATION_API_URL = "https://www.renfairdata.org/api/acts?fair=brevard&year=2025"
 BULK_ENTRY_API_URL = "http://your-backend-api-url.com/bulk_submit"
 
+st.set_page_config(menu_items=None)
+st.set_page_config(page_title="BRF Badge Creator")
+st.set_page_config(page_icon="👑")
+
 # Function to fetch affiliations from API
 def fetch_affiliations(role:str):
     response = None
