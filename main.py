@@ -23,6 +23,8 @@ def fetch_affiliations(role:str):
             response = requests.get(VENDOR_AFFILIATION_API_URL)
         elif role == "Entertainment":
             response = requests.get(ENTERTAINMENT_AFFILIATION_API_URL)
+        elif role == "Press":
+            data = ["Tourist Development Council"]
         else:
             data = ["Admin", "Bar Staff", "Security"]
 
@@ -91,7 +93,7 @@ def single_entry():
     first_name = st.text_input("First Name", value=st.session_state.first_name if st.session_state.first_name else "")
     last_name = st.text_input("Last Name", value=st.session_state.last_name if st.session_state.last_name else "")
     # Dropdown for role selection (placed before affiliation to control visibility)
-    role = st.selectbox("Select a Role", ["Staff", "Vendor", "Entertainment", "Royal Family", "Season Pass"], index=["Staff", "Vendor", "Entertainment", "Royal Family", "Season Pass"].index(st.session_state.role if st.session_state.role else "Staff"))
+    role = st.selectbox("Select a Role", ["Staff", "Vendor", "Entertainment","Press", "Royal Family", "Season Pass"], index=["Staff", "Vendor", "Entertainment", "Royal Family", "Season Pass"].index(st.session_state.role if st.session_state.role else "Staff"))
     # Update affiliations when role changes
     if "previous_role" not in st.session_state:
         st.session_state.previous_role = role
