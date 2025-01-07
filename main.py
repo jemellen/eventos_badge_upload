@@ -26,7 +26,7 @@ def fetch_affiliations(role:str):
         elif role == "Press":
             data = ["Tourist Development Council"]
         else:
-            data = ["Admin", "Bar Staff", "Security"]
+            data = ["Admin", "Bar Staff", "Security", "Ticket Booth", "Site Crew"]
 
         if response != None and response.status_code == 200:
             data = response.json()
@@ -70,7 +70,7 @@ def single_entry():
         try:
             # Call API to get existing badge data
             person_id = params["person_id"]
-            response = requests.get(f"http://localhost:8080/person/{person_id}")
+            response = requests.get(f"{BACKEND_API_URL}person/{person_id}")
             
             if response.status_code == 200:
                 
@@ -112,6 +112,12 @@ def single_entry():
         affiliations = fetch_affiliations(role)
         
         if affiliations:
+            if role == "Vendor":
+             st.write("Select a vendor name below or choose Other to enter any other affiliation (i.e. multiple vendors)")
+            elif role == "Entertainment":
+                st.write("Select an act name below or choose Other to enter any other affiliation (i.e. multiple acts)")
+            elif role == "Staff":
+                st.write("Select a staff role below or choose Other to enter any other affiliation.")
             selected_affiliation = st.selectbox("Select an Affiliation", ["(Other)"] + affiliations)
             if selected_affiliation != "(Other)":
                 affiliation = selected_affiliation
@@ -123,7 +129,9 @@ def single_entry():
         role = role
 
     # File uploader for photo
+
     photo = st.file_uploader("Upload a Photo", type=["jpg", "jpeg", "png"])
+    st.write("Upload a photo of yourself to be printed on the badge. The photo should be a clear headshot.")
 
     cropped_image = None
 
@@ -133,22 +141,22 @@ def single_entry():
         st.image(image, caption="Uploaded Photo", width=300)
 
         # Add cropping functionality
-        st.write("Crop your photo below:")
-        cropped_image = streamlit_cropper.st_cropper(
-            image.resize(scale_image(image.width, image.height, 300)), aspect_ratio=(1, 1), box_color="#FF0000"
-        )
+        #st.write("Crop your photo below:")
+        #cropped_image = streamlit_cropper.st_cropper(
+        #    image.resize(scale_image(image.width, image.height, 300)), aspect_ratio=(1, 1), box_color="#FF0000"
+        #)
 
-        if cropped_image:
-            st.image(cropped_image, caption="Cropped Photo", width=300)
+        #if cropped_image:
+         #   st.image(cropped_image, caption="Cropped Photo", width=300)
 
     # Submit button
     if st.button("Submit"):
-        if not first_name or not last_name or not affiliation or not cropped_image:
-            st.error("Please fill in all fields and upload a cropped photo.")
+        if not first_name or not last_name or not affiliation or not image:
+            st.error("Please fill in all fields and upload a photo.")
         else:
             # Convert cropped image to bytes
             cropped_image_bytes = io.BytesIO()
-            cropped_image.save(cropped_image_bytes, format="PNG")
+            image.save(cropped_image_bytes, format="PNG")
 
             # Prepare the payload
             if existing_data != None:
